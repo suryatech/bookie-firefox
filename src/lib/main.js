@@ -2,6 +2,7 @@ var data = require("sdk/self").data,
     prefs = require('sdk/simple-prefs'),
     tabs = require("sdk/tabs"),
     widgets = require("sdk/widget"),
+    Hotkey = require("sdk/hotkeys").Hotkey,
     BookieApi = require('./api').BookieApi,
     api = BookieApi(prefs.prefs);
 
@@ -21,6 +22,19 @@ var preferenceData = preferences.init(prefs, api, storage);
 // successful. It should publish a new event that the panel can listen to.
 var panel = require('./panel');
 var bookie_panel = panel.init(preferenceData, api, storage);
+
+var hotkeyShowPanel = Hotkey({
+    // accel is platform based: ctrl on Win/Linux; command on Mac
+    combo: 'accel-alt-d',
+    onPress: function() {
+        bookie_panel.show({
+            position: {
+                bottom: 12,
+                right: 10
+            }
+        });
+    }
+});
 
 // The icon in the addon toolbar.
 // @ToDo
