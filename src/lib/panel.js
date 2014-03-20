@@ -176,7 +176,7 @@ exports.init = function(prefs, api, storage) {
                             addBookmarkPanel._widget.port.emit(BMARK_EXISTS);
                         }
 
-                        addBookmarkPanel.hide();
+                        addBookmarkPanel.close();
                     }
                 }
             }, this
@@ -203,12 +203,12 @@ exports.init = function(prefs, api, storage) {
                     // Clear the data on this bookmark.
                     storage.save(data.hash_id, undefined);
                 }
-                addBookmarkPanel.hide();
+                addBookmarkPanel.close();
             },
             failure: function(response) {
                 console.log('NOTIFY WIDGET FAILURE');
                 addBookmarkPanel._widget.port.emit(BMARK_ERROR);
-                addBookmarkPanel.hide();
+                addBookmarkPanel.close();
                 console.log(response.json.error);
             }
         });
