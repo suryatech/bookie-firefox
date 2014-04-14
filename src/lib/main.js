@@ -77,17 +77,18 @@ var showBmarkPanel = Hotkey({
 
 exports.main = function(options, callbacks) {
 
-    // Allow upto a minute for the extension to download the hashes and 
+    // Allow up to a minute for the extension to download the hashes and 
     // update them in the local storage. Otherwise, the intervals after
     // which the hashes are updated is nearly doubled.
-    var interval = (86400 + 60)*1000,
+    var minute = 60 * 1000,
+        interval = (86400 * 1000) + minute,
         api = BookieApi(prefs.prefs),
         that = {
             storage: storage
         };
 
     api.checkNew(storage.get('lastSync'), storage.get('savedPrefs'),
-        interval - (60*1000), that);
+        interval - minute, that);
 
     // The reason why preferences, lastSync, savedPrefs 
     // are not cached is that they can change over a period of time.
@@ -96,7 +97,7 @@ exports.main = function(options, callbacks) {
     var handle = timer.setInterval(function() {
         var api = BookieApi(prefs.prefs);
         api.checkNew(storage.get('lastSync'), storage.get('savedPrefs'),
-            interval - (60*1000), that);
+            interval - minute, that);
     }, interval);
 
     // When the extension is first installed, take the user to the options
